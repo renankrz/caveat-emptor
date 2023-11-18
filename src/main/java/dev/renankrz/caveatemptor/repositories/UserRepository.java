@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.util.Streamable;
 
+import dev.renankrz.caveatemptor.model.Projection;
 import dev.renankrz.caveatemptor.model.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -82,5 +83,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select u.username, LENGTH(u.email) as email_length from #{#entityName} u where u.username like %?1%")
     List<Object[]> findByAsArrayAndSort(String text, Sort sort);
+
+    // Projection
+
+    List<Projection.UserSummary> findByRegistrationDateAfter(LocalDate date);
+
+    List<Projection.UsernameOnly> findByEmail(String username);
+
+    <T> List<T> findByEmail(String username, Class<T> type);
 
 }
