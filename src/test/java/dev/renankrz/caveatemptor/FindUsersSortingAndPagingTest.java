@@ -35,6 +35,7 @@ public class FindUsersSortingAndPagingTest extends CaveatEmptorTests {
         Sort.TypedSort<User> user = Sort.sort(User.class);
 
         List<User> users = userRepository.findByLevel(3, user.by(User::getRegistrationDate).descending());
+
         assertAll(
                 () -> assertEquals(2, users.size()),
                 () -> assertEquals("james", users.get(0).getUsername()));
@@ -43,6 +44,7 @@ public class FindUsersSortingAndPagingTest extends CaveatEmptorTests {
     @Test
     void testFindByActive() {
         List<User> users = userRepository.findByActive(true, PageRequest.of(1, 4, Sort.by("registrationDate")));
+
         assertAll(
                 () -> assertEquals(4, users.size()),
                 () -> assertEquals("burk", users.get(0).getUsername()));

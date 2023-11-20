@@ -79,7 +79,6 @@ public class FindUsersUsingQueriesTest extends CaveatEmptorTests {
     @Test
     void testFindByLevelGreaterThanEqual() {
         List<User> users = userRepository.findByLevelGreaterThanEqual(3);
-
         assertEquals(5, users.size());
     }
 
