@@ -8,12 +8,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.util.Streamable;
 
 import dev.renankrz.caveatemptor.model.Projection;
 import dev.renankrz.caveatemptor.model.User;
+import jakarta.transaction.Transactional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
@@ -91,5 +93,20 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<Projection.UsernameOnly> findByEmail(String username);
 
     <T> List<T> findByEmail(String username, Class<T> type);
+
+    // Modifying
+
+    @Modifying
+    @Transactional
+    @Query("update User u set u.level = ?2 where u.level = ?1")
+    int updateLevel(int oldLevel, int newLevel);
+
+    @Transactional
+    int deleteByLevel(int level);
+
+    @Modifying
+    @Transactional
+    @Query("delete from User u where u.level = ?1")
+    int deleteBulkByLevel(int level);
 
 }
